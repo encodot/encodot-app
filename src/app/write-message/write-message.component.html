@@ -1,0 +1,16 @@
+<h5>Write message</h5>
+
+<form [formGroup]="form" (ngSubmit)="addMessage()">
+  <mat-form-field class="w-100" appearance="outline">
+    <mat-label>Message</mat-label>
+    <textarea matInput placeholder="Secret message..." formControlName="message"></textarea>
+  </mat-form-field>
+
+  <mat-form-field class="w-100" appearance="outline">
+    <mat-label>Password</mat-label>
+    <input matInput type="password" placeholder="Area51..." formControlName="password">
+    <mat-icon matSuffix>vpn_key</mat-icon>
+  </mat-form-field>
+
+  <button mat-stroked-button color="primary" type="submit">Send...</button>
+</form>

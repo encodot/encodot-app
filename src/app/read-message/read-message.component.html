@@ -1,0 +1,14 @@
+<form [formGroup]="form" (ngSubmit)="getMessage()" *ngIf="!clearMessage; else displayMsg">
+  <mat-form-field class="w-100" appearance="outline">
+    <mat-label>Password</mat-label>
+    <input matInput type="password" placeholder="Area51..." formControlName="password">
+    <mat-icon matSuffix>vpn_key</mat-icon>
+  </mat-form-field>
+
+  <button mat-stroked-button color="primary" type="submit">Send...</button>
+</form>
+
+<ng-template #displayMsg>
+  <p>{{ clearMessage }}</p>
+</ng-template>
+
