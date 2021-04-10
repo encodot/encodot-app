@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { WriteMessageRequestService } from './write-message-request.service';
 import { WriteMessageRoutingModule } from './write-message-routing.module';
 import { WriteMessageComponent } from './write-message.component';
@@ -25,6 +26,7 @@ import { WriteMessageComponent } from './write-message.component';
     MatIconModule,
     MatSnackBarModule,
     MatButtonModule,
+    MatTooltipModule,
     MatCardModule,
     FormsModule,
     ReactiveFormsModule
