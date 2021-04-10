@@ -1,16 +1,48 @@
-<h5>Write message</h5>
+<mat-card class="mt-2 w-100">
 
-<form [formGroup]="form" (ngSubmit)="addMessage()">
-  <mat-form-field class="w-100" appearance="outline">
-    <mat-label>Message</mat-label>
-    <textarea matInput placeholder="Secret message..." formControlName="message"></textarea>
-  </mat-form-field>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon class="header">send</mat-icon>
+    </div>
+    <mat-card-title>Write message</mat-card-title>
+    <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+  </mat-card-header>
 
-  <mat-form-field class="w-100" appearance="outline">
-    <mat-label>Password</mat-label>
-    <input matInput type="password" placeholder="Area51..." formControlName="password">
-    <mat-icon matSuffix>vpn_key</mat-icon>
-  </mat-form-field>
+  <form [formGroup]="form" (ngSubmit)="addMessage()">
 
-  <button mat-stroked-button color="primary" type="submit">Send...</button>
-</form>
+    <mat-card-content>
+      <mat-form-field class="my-0 w-100" appearance="outline">
+        <mat-label>Message</mat-label>
+        <textarea matInput placeholder="Secret message..." rows="4" formControlName="message"></textarea>
+      </mat-form-field>
+    
+      <mat-form-field class="my-0 w-100" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" placeholder="Area51..." formControlName="password">
+        <mat-icon matSuffix>vpn_key</mat-icon>
+      </mat-form-field>
+
+      <mat-card class="mt-2 w-100 info" *ngIf="messageMetadata">
+        <mat-card-content class="d-flex">
+          <mat-form-field class="my-0 mr-2 py-0 w-100" appearance="outline">
+            <mat-label>Message URL</mat-label>
+            <input matInput type="url" [value]="url" readonly>
+            <mat-icon matSuffix>link</mat-icon>
+          </mat-form-field>
+          
+          <button mat-stroked-button type="button" color="primary" [cdkCopyToClipboard]="url" (click)="successfullyCopiedToClipboard()">
+            <mat-icon>content_copy</mat-icon>
+            Copy
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </mat-card-content>
+
+    <mat-card-actions class="my-0 p-0 d-flex">
+      <div class="flex-grow-1"></div>
+      <button mat-stroked-button color="primary">Send it :)</button>
+    </mat-card-actions>
+
+  </form>
+  
+</mat-card>
