@@ -21,14 +21,11 @@ export class WriteMessageComponent implements OnInit, OnDestroy {
     password: new FormControl(null, [ Validators.required ])
   });
 
-  public messageMetadata: MessageMetadata = {
-    id: 'dfkajlfkjkejljewlkfjkejjefkej',
-    urlPassword: 'jdjdjdjdjdjdjjdjjdjdjddjdj'
-  };
+  public messageMetadata: MessageMetadata;
 
   public get url(): string {
     const { id, urlPassword } = this.messageMetadata;
-    return `${ window.location.host }/read-message?messageId=${ id }&urlPassword=${ urlPassword }`;
+    return `${ window.location.origin }/read-message?messageId=${ id }&urlPassword=${ urlPassword }`;
   }
 
   public constructor(

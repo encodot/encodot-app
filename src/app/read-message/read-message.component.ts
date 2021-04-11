@@ -14,7 +14,7 @@ import * as forge from 'node-forge';
 export class ReadMessageComponent implements OnInit, OnDestroy {
 
   private actionSub: Subscription;
-  private messageId: string;
+  public messageId: string;
   private urlPassword: string;
 
   public clearMessage: string;
