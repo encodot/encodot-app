@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as forge from 'node-forge';
-import { Subscription } from 'rxjs';
+import { combineLatest, Subscription, timer } from 'rxjs';
 import { concatMap, tap } from 'rxjs/operators';
 import { MessageMetadata } from './models/message-metadata.model';
 import { WriteMessageRequestService } from './write-message-request.service';
@@ -14,7 +14,7 @@ import { WriteMessageRequestService } from './write-message-request.service';
 })
 export class WriteMessageComponent implements OnInit, OnDestroy {
 
-  private actionSub: Subscription;
+  public actionSub: Subscription;
 
   public form = new FormGroup({
     message: new FormControl(null, [ Validators.required ]),
@@ -47,7 +47,7 @@ export class WriteMessageComponent implements OnInit, OnDestroy {
 
     const { message, password } = this.form.value;
 
-    this.actionSub = this.reqSv.getKey().pipe(
+    const meta$ = this.reqSv.getKey().pipe(
       tap(k => {
         console.log('Got api public key', k);
       }),
@@ -60,7 +60,12 @@ export class WriteMessageComponent implements OnInit, OnDestroy {
 
         return this.reqSv.addMessage(id, messageEnc, passwordEnc);
       })
-    ).subscribe(m => {
+    );
+    
+    this.actionSub = combineLatest([
+      meta$,
+      timer(500)
+    ]).subscribe(([ m ]) => {
       console.log(m);
       this.messageMetadata = m;
     }, e => {

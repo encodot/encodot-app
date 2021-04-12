@@ -13,7 +13,7 @@ import * as forge from 'node-forge';
 })
 export class ReadMessageComponent implements OnInit, OnDestroy {
 
-  private actionSub: Subscription;
+  public actionSub: Subscription;
   public messageId: string;
   private urlPassword: string;
 
@@ -51,7 +51,7 @@ export class ReadMessageComponent implements OnInit, OnDestroy {
 
         const apiPubKey = forge.pki.publicKeyFromPem(key);
 
-        const { privateKey, publicKey } = forge.pki.rsa.generateKeyPair(2048);
+        const { privateKey, publicKey } = forge.pki.rsa.generateKeyPair(1024);
         const publicKeyPem = forge.pki.publicKeyToPem(publicKey);
 
         return combineLatest([

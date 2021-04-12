@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ProgressOverlayModule } from '@shared/progress-overlay';
 import { WriteMessageRequestService } from './write-message-request.service';
 import { WriteMessageRoutingModule } from './write-message-routing.module';
 import { WriteMessageComponent } from './write-message.component';
@@ -21,6 +22,7 @@ import { WriteMessageComponent } from './write-message.component';
     CommonModule,
     WriteMessageRoutingModule,
     ClipboardModule,
+    ProgressOverlayModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,

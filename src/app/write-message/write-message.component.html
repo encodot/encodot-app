@@ -1,4 +1,4 @@
-<mat-card class="mt-2 w-100">
+<mat-card class="mt-2 w-100 position-relative">
 
   <mat-card-header>
     <div mat-card-avatar>
@@ -39,5 +39,7 @@
     </mat-card-actions>
 
   </form>
+
+  <app-progress-overlay [show]="actionSub?.closed === false"></app-progress-overlay>
   
 </mat-card>
