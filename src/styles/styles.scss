@@ -24,3 +24,15 @@ body {
   margin-top: 5px;
   margin-left: 5px;
 }
+
+.position-relative {
+  position: relative !important;
+}
+
+.abs-full-size {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
