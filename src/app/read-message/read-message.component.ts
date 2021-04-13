@@ -18,6 +18,7 @@ export class ReadMessageComponent implements OnInit, OnDestroy {
   private urlPassword: string;
 
   public clearMessage: string;
+  public error: string;
 
   public form = new FormGroup({
     password: new FormControl(null, Validators.required)
@@ -42,6 +43,9 @@ export class ReadMessageComponent implements OnInit, OnDestroy {
     if (this.actionSub?.closed === false) {
       return;
     }
+
+    this.clearMessage = null;
+    this.error = null;
 
     const password = this.form.value.password;
 
@@ -71,6 +75,7 @@ export class ReadMessageComponent implements OnInit, OnDestroy {
       console.log('Clear message', this.clearMessage);
     }, e => {
       console.error('Could not load message', e);
+      this.error = 'Something went wrong :(';
     });
   }
 

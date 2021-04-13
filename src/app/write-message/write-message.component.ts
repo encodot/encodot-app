@@ -22,6 +22,7 @@ export class WriteMessageComponent implements OnInit, OnDestroy {
   });
 
   public messageMetadata: MessageMetadata;
+  public error: string;
 
   public get url(): string {
     const { id, urlPassword } = this.messageMetadata;
@@ -45,6 +46,8 @@ export class WriteMessageComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.messageMetadata = null;
+    this.error = null;
     const { message, password } = this.form.value;
 
     const meta$ = this.reqSv.getKey().pipe(
@@ -66,10 +69,11 @@ export class WriteMessageComponent implements OnInit, OnDestroy {
       meta$,
       timer(500)
     ]).subscribe(([ m ]) => {
-      console.log(m);
+      console.log('Got message metadata', m);
       this.messageMetadata = m;
     }, e => {
       console.error('Could not send message :(', e);
+      this.error = 'Something went wrong :(';
     })
   }
 

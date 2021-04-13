@@ -32,6 +32,7 @@
       <button mat-stroked-button type="submit" color="primary">View message</button>
     </mat-card-actions>
 
+    <app-error-card [error]="error"></app-error-card>
   </form>
 
   <app-progress-overlay [show]="actionSub?.closed === false"></app-progress-overlay>
