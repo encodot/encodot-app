@@ -16,9 +16,9 @@ export class ReadMessageRequestService {
     return this.http.get<Key>(`${environment.baseUrl}/message/key`);
   }
 
-  public getMessage(publicKey: string, keyId: string, messageId: string, password: string, urlPassword: string): Observable<MessageResult> {
+  public getMessage(publicKey: string, messageId: string, password: string, urlPassword: string): Observable<MessageResult> {
     return this.http.post<MessageResult>(`${environment.baseUrl}/message/get`, {
-      publicKey, keyId, messageId, password, urlPassword
+      publicKey, messageId, password, urlPassword
     });
   }
 

@@ -16,9 +16,9 @@ export class WriteMessageRequestService {
     return this.http.get<Key>(`${environment.baseUrl}/message/key`);
   }
 
-  public addMessage(keyId: string, message: string, password: string): Observable<MessageMetadata> {
+  public addMessage(message: string, password: string): Observable<MessageMetadata> {
     return this.http.post<MessageMetadata>(`${environment.baseUrl}/message/add`, {
-      keyId, message, password
+      message, password
     });
   }
 

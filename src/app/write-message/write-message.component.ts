@@ -55,16 +55,16 @@ export class WriteMessageComponent implements OnInit, OnDestroy {
         console.log('Got api public key', k);
       }),
       concatMap(k => {
-        const { id, key: publicKeyPem } = k;
+        const { key: publicKeyPem } = k;
         const publicKey = forge.pki.publicKeyFromPem(publicKeyPem);
 
         const messageEnc = forge.util.encode64(publicKey.encrypt(message));
         const passwordEnc = forge.util.encode64(publicKey.encrypt(password));
 
-        return this.reqSv.addMessage(id, messageEnc, passwordEnc);
+        return this.reqSv.addMessage(messageEnc, passwordEnc);
       })
     );
-    
+
     this.actionSub = combineLatest([
       meta$,
       timer(500)

@@ -50,8 +50,8 @@ export class ReadMessageComponent implements OnInit, OnDestroy {
     const password = this.form.value.password;
 
     this.actionSub = this.reqSv.getKey().pipe(
-      concatMap(({ id, key }) => {
-        console.log('Got key', id, key);
+      concatMap(({ key }) => {
+        console.log('Got key', key);
 
         const apiPubKey = forge.pki.publicKeyFromPem(key);
 
@@ -62,7 +62,6 @@ export class ReadMessageComponent implements OnInit, OnDestroy {
           of(privateKey),
           this.reqSv.getMessage(
             publicKeyPem,
-            id,
             forge.util.encode64(apiPubKey.encrypt(this.messageId)),
             forge.util.encode64(apiPubKey.encrypt(password)),
             forge.util.encode64(apiPubKey.encrypt(this.urlPassword))
