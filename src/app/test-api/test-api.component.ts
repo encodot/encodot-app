@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EncodotApiService } from '@shared/encodot-api';
 import { MessageMetadata } from '@shared/models';
 import * as forge from 'node-forge';
 import { combineLatest, Subscription, timer } from 'rxjs';
 import { concatMap, tap } from 'rxjs/operators';
-import { TestApiRequestService } from './test-api-request.service';
 
 @Component({
   selector: 'app-test-api',
@@ -30,7 +30,7 @@ export class TestApiComponent implements OnInit, OnDestroy {
   }
 
   public constructor(
-    private reqSv: TestApiRequestService,
+    private apiSv: EncodotApiService,
     private snackbar: MatSnackBar
   ) { }
 
@@ -50,7 +50,7 @@ export class TestApiComponent implements OnInit, OnDestroy {
     this.error = null;
     const { message, password } = this.form.value;
 
-    const meta$ = this.reqSv.getKey().pipe(
+    const meta$ = this.apiSv.getKey().pipe(
       tap(k => {
         console.log('Got api public key', k);
       }),
@@ -61,7 +61,7 @@ export class TestApiComponent implements OnInit, OnDestroy {
         const messageEnc = forge.util.encode64(publicKey.encrypt(message));
         const passwordEnc = forge.util.encode64(publicKey.encrypt(password));
 
-        return this.reqSv.addMessage(messageEnc, passwordEnc);
+        return this.apiSv.addMessage(messageEnc, passwordEnc);
       })
     );
 

@@ -6,9 +6,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { EncodotApiModule } from '@shared/encodot-api';
 import { ErrorCardModule } from '../shared/error-card';
 import { ProgressOverlayModule } from '../shared/progress-overlay';
-import { ReadMessageRequestService } from './read-message-request.service';
 import { ReadMessageRoutingModule } from './read-message-routing.module';
 import { ReadMessageComponent } from './read-message.component';
 
@@ -19,6 +19,7 @@ import { ReadMessageComponent } from './read-message.component';
   imports: [
     CommonModule,
     ReadMessageRoutingModule,
+    EncodotApiModule,
     ProgressOverlayModule,
     ErrorCardModule,
     MatFormFieldModule,
@@ -28,9 +29,6 @@ import { ReadMessageComponent } from './read-message.component';
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule
-  ],
-  providers: [
-    ReadMessageRequestService
   ]
 })
 export class ReadMessageModule { }

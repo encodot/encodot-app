@@ -9,9 +9,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { EncodotApiModule } from '@shared/encodot-api';
 import { ProgressOverlayModule } from '@shared/progress-overlay';
 import { ErrorCardModule } from '../shared/error-card';
-import { TestApiRequestService } from './test-api-request.service';
 import { TestApiRoutingModule } from './test-api-routing.module';
 import { TestApiComponent } from './test-api.component';
 
@@ -22,6 +22,7 @@ import { TestApiComponent } from './test-api.component';
   imports: [
     CommonModule,
     TestApiRoutingModule,
+    EncodotApiModule,
     ClipboardModule,
     ProgressOverlayModule,
     ErrorCardModule,
@@ -34,9 +35,6 @@ import { TestApiComponent } from './test-api.component';
     MatCardModule,
     FormsModule,
     ReactiveFormsModule
-  ],
-  providers: [
-    TestApiRequestService
   ]
 })
 export class TestApiModule { }

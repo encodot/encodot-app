@@ -9,9 +9,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { EncodotApiModule } from '@shared/encodot-api';
 import { ProgressOverlayModule } from '@shared/progress-overlay';
 import { ErrorCardModule } from '../shared/error-card';
-import { WriteMessageRequestService } from './write-message-request.service';
 import { WriteMessageRoutingModule } from './write-message-routing.module';
 import { WriteMessageComponent } from './write-message.component';
 
@@ -22,6 +22,7 @@ import { WriteMessageComponent } from './write-message.component';
   imports: [
     CommonModule,
     WriteMessageRoutingModule,
+    EncodotApiModule,
     ClipboardModule,
     ProgressOverlayModule,
     ErrorCardModule,
@@ -34,9 +35,6 @@ import { WriteMessageComponent } from './write-message.component';
     MatCardModule,
     FormsModule,
     ReactiveFormsModule
-  ],
-  providers: [
-    WriteMessageRequestService
   ]
 })
 export class WriteMessageModule { }

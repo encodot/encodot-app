@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, of, Subscription } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
-import { ReadMessageRequestService } from './read-message-request.service';
 import * as forge from 'node-forge';
+import { EncodotApiService } from '@shared/encodot-api';
 
 @Component({
   selector: 'app-read-message',
@@ -26,7 +26,7 @@ export class ReadMessageComponent implements OnInit, OnDestroy {
 
   public constructor(
     private activatedRoute: ActivatedRoute,
-    private reqSv: ReadMessageRequestService
+    private apiSv: EncodotApiService
   ) { }
 
   public ngOnInit(): void {
@@ -49,7 +49,7 @@ export class ReadMessageComponent implements OnInit, OnDestroy {
 
     const password = this.form.value.password;
 
-    this.actionSub = this.reqSv.getKey().pipe(
+    this.actionSub = this.apiSv.getKey().pipe(
       concatMap(({ key }) => {
         console.log('Got key', key);
 
@@ -60,7 +60,7 @@ export class ReadMessageComponent implements OnInit, OnDestroy {
 
         return combineLatest([
           of(privateKey),
-          this.reqSv.getMessage(
+          this.apiSv.getMessage(
             publicKeyPem,
             forge.util.encode64(apiPubKey.encrypt(this.messageId)),
             forge.util.encode64(apiPubKey.encrypt(password)),
