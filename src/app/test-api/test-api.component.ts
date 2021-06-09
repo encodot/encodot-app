@@ -5,14 +5,14 @@ import { MessageMetadata } from '@shared/models';
 import * as forge from 'node-forge';
 import { combineLatest, Subscription, timer } from 'rxjs';
 import { concatMap, tap } from 'rxjs/operators';
-import { WriteMessageRequestService } from './write-message-request.service';
+import { TestApiRequestService } from './test-api-request.service';
 
 @Component({
-  selector: 'app-write-message',
-  templateUrl: './write-message.component.html',
-  styleUrls: ['./write-message.component.scss']
+  selector: 'app-test-api',
+  templateUrl: './test-api.component.html',
+  styleUrls: ['./test-api.component.scss']
 })
-export class WriteMessageComponent implements OnInit, OnDestroy {
+export class TestApiComponent implements OnInit, OnDestroy {
 
   public actionSub: Subscription;
 
@@ -30,7 +30,7 @@ export class WriteMessageComponent implements OnInit, OnDestroy {
   }
 
   public constructor(
-    private reqSv: WriteMessageRequestService,
+    private reqSv: TestApiRequestService,
     private snackbar: MatSnackBar
   ) { }
 

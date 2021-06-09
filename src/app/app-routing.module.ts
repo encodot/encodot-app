@@ -4,7 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   { path: '', redirectTo: '/write-message', pathMatch: 'full' },
   { path: 'write-message', loadChildren: () => import('./write-message/write-message.module').then(m => m.WriteMessageModule) },
-  { path: 'read-message', loadChildren: () => import('./read-message/read-message.module').then(m => m.ReadMessageModule) }
+  { path: 'read-message', loadChildren: () => import('./read-message/read-message.module').then(m => m.ReadMessageModule) },
+  { path: 'test-api', loadChildren: () => import('./test-api/test-api.module').then(m => m.TestApiModule) }
 ];
 
 @NgModule({
