@@ -70,7 +70,7 @@ export class ReadMessageComponent implements OnInit, OnDestroy {
       })
     ).subscribe(([ privateKey, m ]) => {
       console.log('Got message', m);
-      this.clearMessage = privateKey.decrypt(forge.util.decode64(m.message));
+      this.clearMessage = forge.util.decodeUtf8(privateKey.decrypt(forge.util.decode64(m.message)));
       console.log('Clear message', this.clearMessage);
     }, e => {
       console.error('Could not load message', e);

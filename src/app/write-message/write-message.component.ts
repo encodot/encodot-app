@@ -58,8 +58,8 @@ export class WriteMessageComponent implements OnInit, OnDestroy {
         const { key: publicKeyPem } = k;
         const publicKey = forge.pki.publicKeyFromPem(publicKeyPem);
 
-        const messageEnc = forge.util.encode64(publicKey.encrypt(message));
-        const passwordEnc = forge.util.encode64(publicKey.encrypt(password));
+        const messageEnc = forge.util.encode64(publicKey.encrypt(forge.util.encodeUtf8(message)));
+        const passwordEnc = forge.util.encode64(publicKey.encrypt(forge.util.encodeUtf8(password)));
 
         return this.apiSv.addMessage(messageEnc, passwordEnc);
       })

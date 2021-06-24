@@ -2,27 +2,57 @@
 
   <mat-card-header>
     <div mat-card-avatar>
-      <mat-icon class="card-header">send</mat-icon>
+      <mat-icon class="card-header">bug_report</mat-icon>
     </div>
-    <mat-card-title>Write message</mat-card-title>
-    <mat-card-subtitle>Transmitted with RSA & encrypted with AES</mat-card-subtitle>
+    <mat-card-title>Test api</mat-card-title>
+    <mat-card-subtitle>Transmit large numbers of random messages to test the api.</mat-card-subtitle>
   </mat-card-header>
 
-  <form [formGroup]="form" (ngSubmit)="addMessage()">
+  <form [formGroup]="form" (ngSubmit)="startTest()">
 
     <mat-card-content>
+
       <mat-form-field class="my-0 w-100" appearance="outline">
-        <mat-label>Message</mat-label>
-        <textarea matInput placeholder="Secret message..." rows="4" formControlName="message"></textarea>
-      </mat-form-field>
-    
-      <mat-form-field class="my-0 w-100" appearance="outline">
-        <mat-label>Password</mat-label>
-        <input matInput type="password" placeholder="Area51..." formControlName="password">
-        <mat-icon matSuffix>vpn_key</mat-icon>
+        <mat-label>Test cycles</mat-label>
+        <input matInput type="number" placeholder="420" formControlName="testCycles" min="1" max="10000">
+        <mat-icon matSuffix>pedal_bike</mat-icon>
       </mat-form-field>
 
-      <mat-card class="mt-2 w-100 info" *ngIf="messageMetadata">
+      <div class="d-flex">
+        <div class="flex-grow-1">
+          <mat-form-field class="my-0 mr-1 w-100" appearance="outline">
+            <mat-label>Message Min</mat-label>
+            <input matInput type="number" placeholder="420" formControlName="msgMin" min="1" max="1000">
+          </mat-form-field>
+        </div>
+
+        <div class="flex-grow-1">
+          <mat-form-field class="my-0 ml-1 w-100" appearance="outline">
+            <mat-label>Message Max</mat-label>
+            <input matInput type="number" placeholder="420" formControlName="msgMax" min="2" max="10000">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="d-flex">
+        <div class="flex-grow-1">
+          <mat-form-field class="my-0 mr-1 w-100" appearance="outline">
+            <mat-label>Password Min</mat-label>
+            <input matInput type="number" placeholder="420" formControlName="passwordMin" min="1" max="50">
+          </mat-form-field>
+        </div>
+
+        <div class="flex-grow-1">
+          <mat-form-field class="my-0 ml-1 w-100" appearance="outline">
+            <mat-label>Password Max</mat-label>
+            <input matInput type="number" placeholder="420" formControlName="passwordMax" min="2" max="1000">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <mat-checkbox formControlName="specialChars">Special chars</mat-checkbox>
+
+      <!-- <mat-card class="mt-2 w-100 info" *ngIf="messageMetadata">
         <mat-card-content>
             <mat-form-field class="my-0 mr-2 py-0 w-100" appearance="outline">
               <mat-label>Message URL</mat-label>
@@ -30,18 +60,18 @@
               <mat-icon class="cursor-pointer" matSuffix [cdkCopyToClipboard]="url" (click)="successfullyCopiedToClipboard()" matTooltip="Copy to clipboard">content_copy</mat-icon>
             </mat-form-field>
         </mat-card-content>
-      </mat-card>
+      </mat-card> -->
 
-      <app-error-card [error]="error"></app-error-card>
+      <!-- <app-error-card [error]="error"></app-error-card> -->
     </mat-card-content>
 
     <mat-card-actions class="my-0 p-0 d-flex">
       <div class="flex-grow-1"></div>
-      <button mat-stroked-button color="primary">Send it :)</button>
+      <button mat-stroked-button color="primary">Lets go!</button>
     </mat-card-actions>
 
   </form>
 
-  <app-progress-overlay [show]="actionSub?.closed === false"></app-progress-overlay>
-  
+  <!-- <app-progress-overlay [show]="actionSub?.closed === false"></app-progress-overlay> -->
+
 </mat-card>
