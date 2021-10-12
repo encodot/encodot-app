@@ -1,10 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { combineLatest, of, Subscription } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
-import * as forge from 'node-forge';
 import { EncodotApiService } from '@shared/encodot-api';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-read-message',
@@ -31,8 +29,8 @@ export class ReadMessageComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     const queryParams = this.activatedRoute.snapshot.queryParams;
-    this.messageId = queryParams['messageId'];
-    this.urlPassword = queryParams['urlPassword'];
+    this.messageId = queryParams.messageId;
+    this.urlPassword = queryParams.urlPassword;
   }
 
   public ngOnDestroy(): void {
@@ -49,29 +47,9 @@ export class ReadMessageComponent implements OnInit, OnDestroy {
 
     const password = this.form.value.password;
 
-    this.actionSub = this.apiSv.getKey().pipe(
-      concatMap(({ key }) => {
-        console.log('Got key', key);
-
-        const apiPubKey = forge.pki.publicKeyFromPem(key);
-
-        const { privateKey, publicKey } = forge.pki.rsa.generateKeyPair(1024);
-        const publicKeyPem = forge.pki.publicKeyToPem(publicKey);
-
-        return combineLatest([
-          of(privateKey),
-          this.apiSv.getMessage(
-            publicKeyPem,
-            forge.util.encode64(apiPubKey.encrypt(this.messageId)),
-            forge.util.encode64(apiPubKey.encrypt(password)),
-            forge.util.encode64(apiPubKey.encrypt(this.urlPassword))
-          )
-        ]);
-      })
-    ).subscribe(([ privateKey, m ]) => {
-      console.log('Got message', m);
-      this.clearMessage = forge.util.decodeUtf8(privateKey.decrypt(forge.util.decode64(m.message)));
-      console.log('Clear message', this.clearMessage);
+    this.actionSub = this.apiSv.getMessage(this.messageId, password, this.urlPassword).subscribe(({ message }) => {
+      console.log('Got message', message);
+      this.clearMessage = message;
     }, e => {
       console.error('Could not load message', e);
       this.error = 'Something went wrong :(';
