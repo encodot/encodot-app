@@ -66,7 +66,9 @@ export class AesService {
       return typedTransitMsg;
     }
 
-    const [ typePrefix, transitMsg ] = typedTransitMsg.split(this.typeSeperator, 2);
+    const typePrefix = typedTransitMsg[0];
+    const transitMsg = typedTransitMsg.slice(1);
+
     const type = [...this.typePrefixes.entries()].find(([key, val]) => val === typePrefix)?.[0];
 
     if (type == null) {
