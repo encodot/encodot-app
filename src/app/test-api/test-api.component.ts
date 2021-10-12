@@ -3,8 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EncodotApiService } from '@shared/encodot-api';
 import { MessageMetadata } from '@shared/models';
-import * as forge from 'node-forge';
-import { combineLatest, concat, Observable, of, Subscription } from 'rxjs';
+import { concat, Observable, of, Subscription } from 'rxjs';
 import { catchError, concatMap, last, map, tap } from 'rxjs/operators';
 
 @Component({
@@ -68,50 +67,27 @@ export class TestApiComponent implements OnInit, OnDestroy {
     const msg = this.getRandomString(msgMin, msgMax, specialChars);
     const pw = this.getRandomString(pwMin, pwMax, specialChars);
 
-    const key$ = this.apiSv.getKey().pipe(
-      map(({ key }) => forge.pki.publicKeyFromPem(key))
-    );
-
-    const addMessage = (key: forge.pki.rsa.PublicKey) => {
-      const messageEnc = forge.util.encode64(key.encrypt(forge.util.encodeUtf8(msg)));
-      const passwordEnc = forge.util.encode64(key.encrypt(forge.util.encodeUtf8(pw)));
-
-      return combineLatest([
-        of(key),
-        this.apiSv.addMessage(messageEnc, passwordEnc)
-      ]);
+    const addMessage = () => {
+      return this.apiSv.addMessage(msg, pw);
     };
 
-    const getMessage = (key: forge.pki.rsa.PublicKey, meta: MessageMetadata) => {
+    const getMessage = (meta: MessageMetadata) => {
       const { id, urlPassword } = meta;
-      const { privateKey, publicKey } = forge.pki.rsa.generateKeyPair(1024);
-      const publicKeyPem = forge.pki.publicKeyToPem(publicKey);
-
-      return combineLatest([
-        of(privateKey),
-        this.apiSv.getMessage(
-          publicKeyPem,
-          forge.util.encode64(key.encrypt(forge.util.encodeUtf8(id))),
-          forge.util.encode64(key.encrypt(forge.util.encodeUtf8(pw))),
-          forge.util.encode64(key.encrypt(forge.util.encodeUtf8(urlPassword)))
-        )
-      ]);
+      return this.apiSv.getMessage(id, pw, urlPassword);
     };
 
     let startTime: number;
 
     return of(null).pipe(
       tap(() => {
+        console.log('Message to encrpyt', msg);
         startTime = Date.now();
       }),
-      concatMap(() => key$),
-      concatMap(k => addMessage(k)),
-      concatMap(([ key, meta ]) => getMessage(key, meta)),
-      map(([ privateKey, res ]) => {
-        const clearMessage = forge.util.decodeUtf8(privateKey.decrypt(forge.util.decode64(res.message)));
-
-        if (clearMessage !== msg) {
-          throw new Error(`Message missmatch! ${msg} ${clearMessage}`);
+      concatMap(k => addMessage()),
+      concatMap((meta) => getMessage(meta)),
+      map(m => {
+        if (m.message !== msg) {
+          throw new Error(`Message missmatch! ${msg} ${m.message}`);
         }
 
         return Date.now() - startTime;
@@ -120,7 +96,7 @@ export class TestApiComponent implements OnInit, OnDestroy {
         console.error('Test cycle failed', e);
         return of(e);
       })
-    )
+    );
   }
 
   private getRandomString(min: number, max: number, specialChars: boolean): string {
@@ -133,7 +109,7 @@ export class TestApiComponent implements OnInit, OnDestroy {
         return charMap[Math.floor(Math.random() * charMap.length)];
       }
 
-      return String.fromCharCode(Math.floor(Math.random() * 65535));
+      return String.fromCharCode(32 + Math.floor(Math.random() * (1520 - 32)));
     };
 
     for (let i = 0; i < strLen; i++) {
