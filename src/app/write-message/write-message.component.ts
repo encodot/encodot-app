@@ -1,18 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EncodotApiService } from '@shared/encodot-api';
 import { MessageMetadata } from '@shared/models';
-import * as forge from 'node-forge';
 import { combineLatest, Subscription, timer } from 'rxjs';
-import { concatMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-write-message',
   templateUrl: './write-message.component.html',
   styleUrls: ['./write-message.component.scss']
 })
-export class WriteMessageComponent implements OnInit, OnDestroy {
+export class WriteMessageComponent implements OnDestroy {
 
   public actionSub: Subscription;
 
@@ -34,9 +32,6 @@ export class WriteMessageComponent implements OnInit, OnDestroy {
     private snackbar: MatSnackBar
   ) { }
 
-  public ngOnInit(): void {
-  }
-
   public ngOnDestroy(): void {
     this.actionSub?.unsubscribe();
   }
@@ -50,20 +45,7 @@ export class WriteMessageComponent implements OnInit, OnDestroy {
     this.error = null;
     const { message, password } = this.form.value;
 
-    const meta$ = this.apiSv.getKey().pipe(
-      tap(k => {
-        console.log('Got api public key', k);
-      }),
-      concatMap(k => {
-        const { key: publicKeyPem } = k;
-        const publicKey = forge.pki.publicKeyFromPem(publicKeyPem);
-
-        const messageEnc = forge.util.encode64(publicKey.encrypt(forge.util.encodeUtf8(message)));
-        const passwordEnc = forge.util.encode64(publicKey.encrypt(forge.util.encodeUtf8(password)));
-
-        return this.apiSv.addMessage(messageEnc, passwordEnc);
-      })
-    );
+    const meta$ = this.apiSv.addMessage(message, password);
 
     this.actionSub = combineLatest([
       meta$,
@@ -72,9 +54,9 @@ export class WriteMessageComponent implements OnInit, OnDestroy {
       console.log('Got message metadata', m);
       this.messageMetadata = m;
     }, e => {
-      console.error('Could not send message :(', e);
+      console.error('Could not send message', e);
       this.error = 'Something went wrong :(';
-    })
+    });
   }
 
   public successfullyCopiedToClipboard(): void {
