@@ -84,24 +84,6 @@ export class AesService {
     return valStr;
   }
 
-  private deriveKeyFromPassword(password: string, salt: string): string {
-    const md = forge.md.sha256.create();
-    return forge.pkcs5.pbkdf2(password, salt, 15000, 32, md);
-  }
-
-  private getTransitMsgStr(salt: string, iv: string, encrypted: string): string {
-    return forge.util.encode64(salt + iv + encrypted);
-  }
-
-  private parseTransitMsg(transitMsg: string): TransitMsg {
-    const byteStr = forge.util.decode64(transitMsg);
-    const salt = byteStr.slice(0, 16);
-    const iv = byteStr.slice(16, 32);
-    const encrypted = byteStr.slice(32);
-
-    return { salt, iv, encrypted };
-  }
-
   public encryptObj<T>(obj: T, password: string, properties: (keyof T)[]): T {
     const entries: [keyof T, string][] = (Object.entries(obj) as [keyof T, any])
       .map(([ key, val ]) => {
@@ -126,6 +108,39 @@ export class AesService {
       });
 
     return Object.fromEntries(entries) as unknown as T;
+  }
+
+  private deriveKeyFromPassword(password: string, salt: string): string {
+    const md = forge.md.sha256.create();
+    return forge.pkcs5.pbkdf2(password, salt, 15000, 32, md);
+  }
+
+  private getTransitMsgStr(salt: string, iv: string, encrypted: string): string {
+    return this.encodeUrlBase64(salt + iv + encrypted);
+  }
+
+  private parseTransitMsg(transitMsg: string): TransitMsg {
+    const byteStr = this.decodeUrlBase64(transitMsg);
+    const salt = byteStr.slice(0, 16);
+    const iv = byteStr.slice(16, 32);
+    const encrypted = byteStr.slice(32);
+
+    return { salt, iv, encrypted };
+  }
+
+  private encodeUrlBase64(bytes: string): string {
+    const base64 = forge.util.encode64(bytes);
+    return base64.replace('+', '-').replace('/', '_').replace(/=+$/, '');
+  }
+
+  private decodeUrlBase64(urlBase64: string): string {
+    let base64 = urlBase64.replace('-', '+').replace('_', '/');
+
+    while (base64.length % 4) {
+      base64 += '=';
+    }
+
+    return forge.util.decode64(base64);
   }
 
 }
