@@ -1,0 +1,16 @@
+trigger:
+- release/prod
+
+variables:
+- group: docker
+
+pool:
+  vmImage: ubuntu-20.04
+
+steps:
+- script: |
+    docker build -t $(DockerId)/$(ImageName):latest -t $(DockerId)/$(ImageName):$(jq -r .version package.json)-$(Build.BuildNumber)-$(Build.SourceBranchName) .
+    docker login -u $(DockerId) -p $(DockerPassword)
+    docker push $(DockerId)/$(ImageName):latest
+    docker push $(DockerId)/$(ImageName):$(jq -r .version package.json)-$(Build.BuildNumber)-$(Build.SourceBranchName)
+  displayName: 'Build and push docker container'
