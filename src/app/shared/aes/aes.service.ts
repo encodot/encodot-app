@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Base64Service } from '@shared/base64';
 import * as forge from 'node-forge';
 
 interface TransitMsg {
@@ -15,7 +16,10 @@ export class AesService {
     [ 'number', 'n' ],
     [ 'boolean', 'b' ]
   ]);
-  private readonly typeSeperator = '.'; // Using the dot as it is url safe.
+
+  public constructor(
+    private b64: Base64Service
+  ) {}
 
   public encrypt(message: string, password: string): string {
     const salt = forge.random.getBytesSync(16);
@@ -118,31 +122,16 @@ export class AesService {
   }
 
   private getTransitMsgStr(salt: string, iv: string, encrypted: string): string {
-    return this.encodeUrlBase64(salt + iv + encrypted);
+    return this.b64.encodeUrl(salt + iv + encrypted);
   }
 
   private parseTransitMsg(transitMsg: string): TransitMsg {
-    const byteStr = this.decodeUrlBase64(transitMsg);
+    const byteStr = this.b64.decodeUrl(transitMsg);
     const salt = byteStr.slice(0, 16);
     const iv = byteStr.slice(16, 32);
     const encrypted = byteStr.slice(32);
 
     return { salt, iv, encrypted };
-  }
-
-  private encodeUrlBase64(bytes: string): string {
-    const base64 = forge.util.encode64(bytes);
-    return base64.replace('+', '-').replace('/', '_').replace(/=+$/, '');
-  }
-
-  private decodeUrlBase64(urlBase64: string): string {
-    let base64 = urlBase64.replace('-', '+').replace('_', '/');
-
-    while (base64.length % 4) {
-      base64 += '=';
-    }
-
-    return forge.util.decode64(base64);
   }
 
 }
