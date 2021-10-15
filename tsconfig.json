@@ -18,7 +18,10 @@
     ],
     "paths": {
       "@shared/*": [ "app/shared/*" ]
-    }
+    },
+    "types": [
+      "jest"
+    ]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

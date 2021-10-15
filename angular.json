@@ -90,6 +90,13 @@
             "browserTarget": "encodot:build"
           }
         },
+        "test": {
+          "builder": "@angular-builders/jest:run",
+          "options": {
+            "no-cache": true,
+            "runInBand": true
+          }
+        },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
