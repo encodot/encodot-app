@@ -1,9 +1,0 @@
-<div
-  class="abs-full-size progress-overlay d-flex align-items-center justify-content-center"
-  [@showHideBlur]="show ? 'show' : 'hide'"
-  (@showHideBlur.start)="animationStart($event)"
-  (@showHideBlur.done)="animationDone($event)"
-  [ngClass]="{ 'd-flex': visible, 'd-none': !visible }"
->
-  <mat-spinner [diameter]="40" [@showHideOpacity]="show ? 'show' : 'hide'"></mat-spinner>
-</div>
