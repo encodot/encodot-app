@@ -75,6 +75,7 @@ export class SpinnerDirective implements OnInit {
   }
 
   private addSpinner(): void {
+    this.host.disabled = true;
     this.clear();
 
     const matIconRef = this.addIconBase();
@@ -89,8 +90,6 @@ export class SpinnerDirective implements OnInit {
       matIconRef.location.nativeElement,
       spinnerRef.location.nativeElement
     );
-
-    this.host.disabled = true;
   }
 
   private clear(): void {
