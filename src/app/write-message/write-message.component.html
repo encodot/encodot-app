@@ -17,17 +17,17 @@
       </mat-form-field>
 
       <mat-form-field class="my-0 w-100" appearance="outline">
-        <mat-label>Password</mat-label>
+        <mat-label>Password (Optional)</mat-label>
         <input matInput type="password" placeholder="Area51…" formControlName="password">
         <mat-icon matSuffix>vpn_key</mat-icon>
       </mat-form-field>
 
-      <mat-card class="mt-2 w-100 info" *ngIf="messageMetadata">
+      <mat-card class="mt-2 w-100 info" *ngIf="url">
         <mat-card-content>
             <mat-form-field class="my-0 mr-2 py-0 w-100" appearance="outline">
               <mat-label>Message URL</mat-label>
               <input matInput type="url" [value]="url" readonly>
-              <mat-icon class="cursor-pointer" matSuffix [cdkCopyToClipboard]="url" (click)="successfullyCopiedToClipboard()" matTooltip="Copy to clipboard">content_copy</mat-icon>
+              <mat-icon class="cursor-pointer" matSuffix [cdkCopyToClipboard]="url" (click)="copiedToClipboard()" matTooltip="Copy to clipboard">content_copy</mat-icon>
             </mat-form-field>
         </mat-card-content>
       </mat-card>

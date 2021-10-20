@@ -2,7 +2,6 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EncodotApiService } from '@shared/encodot-api';
-import { MessageMetadata } from '@shared/models';
 import { combineLatest, Subscription, timer } from 'rxjs';
 
 @Component({
@@ -16,16 +15,11 @@ export class WriteMessageComponent implements OnDestroy {
 
   public form = new FormGroup({
     message: new FormControl(null, [ Validators.required ]),
-    password: new FormControl(null, [ Validators.required ])
+    password: new FormControl()
   });
 
-  public messageMetadata: MessageMetadata;
   public error: string;
-
-  public get url(): string {
-    const { id, urlPassword } = this.messageMetadata;
-    return `${ window.location.origin }/read-message?messageId=${ id }&urlPassword=${ urlPassword }`;
-  }
+  public url: string;
 
   public constructor(
     private apiSv: EncodotApiService,
@@ -41,28 +35,39 @@ export class WriteMessageComponent implements OnDestroy {
       return;
     }
 
-    this.messageMetadata = null;
     this.error = null;
+    this.url = null;
     const { message, password } = this.form.value;
 
-    const meta$ = this.apiSv.addMessage(message, password);
+    const meta$ = this.apiSv.addMessage(message, password === '' ? null : password);
 
     this.actionSub = combineLatest([
       meta$,
-      timer(500)
+      timer(1000)
     ]).subscribe(([ m ]) => {
+      const { id, urlPassword } = m;
       console.log('Got message metadata', m);
-      this.messageMetadata = m;
+      this.url = this.getUrl(window.location.origin, id, urlPassword, password?.length > 0)
     }, e => {
       console.error('Could not send message', e);
       this.error = 'Something went wrong :(';
     });
   }
 
-  public successfullyCopiedToClipboard(): void {
+  public copiedToClipboard(): void {
     this.snackbar.open('Copied message URL to clipboard! :)', null, {
       duration: 2000
     });
+  }
+
+  private getUrl(origin: string, messageId: string, urlPassword: string, usePassword: boolean): string {
+    let url = `${ origin }/read-message?id=${ messageId }&urlPw=${ urlPassword }`;
+
+    if (usePassword) {
+      url += '&promptPw=true';
+    }
+
+    return url;
   }
 
 }
