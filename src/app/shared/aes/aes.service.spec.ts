@@ -63,4 +63,13 @@ describe('AesService', () => {
     expect(cipher).toMatch(/^([a-zA-Z0-9\.\_\-\~])*$/);
   });
 
+  test('decrypt should throw error on invalid password', () => {
+    const t = (): void => {
+      const cipher = service.encrypt('Will I ever be decrypted successfully?', 'entropy-is-key');
+      service.decrypt(cipher, 'I forgot, hope I will remember');
+    };
+
+    expect(t).toThrowError('Decryption failed');
+  });
+
 });
