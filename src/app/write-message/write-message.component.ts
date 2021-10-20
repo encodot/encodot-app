@@ -2,7 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EncodotApiService } from '@shared/encodot-api';
-import { combineLatest, Subscription, timer } from 'rxjs';
+import { delayAtLeast } from '@shared/rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-write-message',
@@ -41,13 +42,11 @@ export class WriteMessageComponent implements OnDestroy {
 
     const meta$ = this.apiSv.addMessage(message, password === '' ? null : password);
 
-    this.actionSub = combineLatest([
-      meta$,
-      timer(1000)
-    ]).subscribe(([ m ]) => {
-      const { id, urlPassword } = m;
-      console.log('Got message metadata', m);
-      this.url = this.getUrl(window.location.origin, id, urlPassword, password?.length > 0)
+    this.actionSub = meta$.pipe(
+      delayAtLeast(1000)
+    ).subscribe(({ id, urlPassword }) => {
+      console.log('Got message metadata', id, urlPassword);
+      this.url = this.getUrl(window.location.origin, id, urlPassword, password?.length > 0);
     }, e => {
       console.error('Could not send message', e);
       this.error = 'Something went wrong :(';
