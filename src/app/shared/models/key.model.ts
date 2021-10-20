@@ -1,4 +1,4 @@
 export interface Key {
-  id: number;
+  id: string;
   key: string;
 }
