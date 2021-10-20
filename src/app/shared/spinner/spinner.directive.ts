@@ -47,7 +47,9 @@ export class SpinnerDirective implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.appSpinner = false;
+    if (this.showSpinner === null) {
+      this.appSpinner = false;
+    }
   }
 
   private addIconBase(): ComponentRef<MatIcon> {
