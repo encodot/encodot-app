@@ -5,6 +5,7 @@ import * as forge from 'node-forge';
 interface TransitMsg {
   salt: string;
   iv: string;
+  tag: string;
   encrypted: string;
 }
 
@@ -29,25 +30,33 @@ export class AesService {
     // In this case for aes256, it is 32 bytes.
     const key = this.deriveKeyFromPassword(forge.util.encodeUtf8(password), salt);
 
-    const cipher = forge.cipher.createCipher('AES-CBC', key);
+    const cipher = forge.cipher.createCipher('AES-GCM', key);
 
     cipher.start({ iv });
     cipher.update(forge.util.createBuffer(forge.util.encodeUtf8(message)));
     cipher.finish();
 
     const encrypted = cipher.output.getBytes();
-    return this.getTransitMsgStr(salt, iv, encrypted);
+    const tag = cipher.mode.tag.getBytes();
+    return this.getTransitMsgStr(salt, iv, tag, encrypted);
   }
 
   public decrypt(transitMsg: string, password: string): string {
-    const { salt, iv, encrypted } = this.parseTransitMsg(transitMsg);
+    const { salt, iv, tag, encrypted } = this.parseTransitMsg(transitMsg);
     const key = this.deriveKeyFromPassword(forge.util.encodeUtf8(password), salt);
 
-    const decipher = forge.cipher.createDecipher('AES-CBC', key);
+    const decipher = forge.cipher.createDecipher('AES-GCM', key);
 
-    decipher.start({ iv });
+    decipher.start({
+      iv,
+      tag: forge.util.createBuffer(tag, 'raw')
+    });
     decipher.update(forge.util.createBuffer(encrypted, 'raw'));
-    decipher.finish();
+    const pass = decipher.finish();
+
+    if (!pass) {
+      throw new Error('Decryption failed');
+    }
 
     return forge.util.decodeUtf8(decipher.output.getBytes());
   }
@@ -121,17 +130,18 @@ export class AesService {
     return forge.pkcs5.pbkdf2(password, salt, 15000, 32, md);
   }
 
-  private getTransitMsgStr(salt: string, iv: string, encrypted: string): string {
-    return this.b64.encodeUrl(salt + iv + encrypted);
+  private getTransitMsgStr(salt: string, iv: string, tag: string, encrypted: string): string {
+    return this.b64.encodeUrl(salt + iv + tag + encrypted);
   }
 
   private parseTransitMsg(transitMsg: string): TransitMsg {
     const byteStr = this.b64.decodeUrl(transitMsg);
     const salt = byteStr.slice(0, 16);
     const iv = byteStr.slice(16, 32);
-    const encrypted = byteStr.slice(32);
+    const tag = byteStr.slice(32, 48);
+    const encrypted = byteStr.slice(48);
 
-    return { salt, iv, encrypted };
+    return { salt, iv, tag, encrypted };
   }
 
 }
