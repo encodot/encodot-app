@@ -7,8 +7,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { EncodotApiModule } from '@shared/encodot-api';
+import { SpinnerModule } from '@shared/spinner';
 import { ErrorCardModule } from '../shared/error-card';
-import { ProgressOverlayModule } from '../shared/progress-overlay';
 import { ReadMessageRoutingModule } from './read-message-routing.module';
 import { ReadMessageComponent } from './read-message.component';
 
@@ -20,8 +20,8 @@ import { ReadMessageComponent } from './read-message.component';
     CommonModule,
     ReadMessageRoutingModule,
     EncodotApiModule,
-    ProgressOverlayModule,
     ErrorCardModule,
+    SpinnerModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
