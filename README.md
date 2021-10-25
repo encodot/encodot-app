@@ -1,27 +1,19 @@
-# Encodot
+# Encodot App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.7.
+[![Build Status](https://dev.azure.com/sheepr4ider/encodot-app/_apis/build/status/xpl0t.encodot-app?branchName=release%2Fprod)](https://dev.azure.com/sheepr4ider/encodot-app/_build/latest?definitionId=10&branchName=release%2Fprod)
 
-## Development server
+Website for the encodot project.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Run development server
 
-## Code scaffolding
+**Prerequisites:**
+- [Node.js](https://nodejs.org/en/)
+- [Angular Cli](https://angular.io/cli)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+First install npm packets with `npm install`.
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Then a local development server can be started with the command `ng serve`. Once the server has started up you can open the website on [http://localhost:4200](http://localhost:4200).
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Run `ng test` to execute the unit tests via [JestJS](https://jestjs.io/).
