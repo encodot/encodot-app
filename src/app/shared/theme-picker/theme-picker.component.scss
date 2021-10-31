@@ -1,0 +1,62 @@
+.theme-picker-menu {
+  .mat-menu-item {
+    .mat-icon.theme-demo {
+      margin-right: 0;
+      margin-left: 8px;
+      float: right;
+
+      svg {
+        vertical-align: middle;
+      }
+
+      // The below colors need to align with the themes defined in ThemePicker
+      &.deeppurple-amber svg {
+        .theme-background {
+          fill: #fafafa;
+        }
+        .theme-button {
+          fill: #FFC107;
+        }
+        .theme-toolbar {
+          fill: #673AB7;
+        }
+      }
+
+      &.indigo-pink svg {
+        .theme-background {
+          fill: #fafafa;
+        }
+        .theme-button {
+          fill: #E91E63;
+        }
+        .theme-toolbar {
+          fill: #3F51B5;
+        }
+      }
+
+      &.pink-bluegrey svg {
+        .theme-background {
+          fill: #303030;
+        }
+        .theme-button {
+          fill: #607D8B;
+        }
+        .theme-toolbar {
+          fill: #E91E63;
+        }
+      }
+
+      &.purple-green svg {
+        .theme-background {
+          fill: #303030;
+        }
+        .theme-button {
+          fill: #4CAF50;
+        }
+        .theme-toolbar {
+          fill: #9C27B0;
+        }
+      }
+    }
+  }
+}
