@@ -5,9 +5,14 @@
 // Styles for the docs app that are based on the current theme.
 @mixin theme($theme) {
   $background: map.get($theme, background);
+  $foreground: map.get($theme, foreground);
 
   .encodot-background {
     background: mat.get-color-from-palette($background, background);
+  }
+
+  svg.logo {
+    fill: map.get($foreground, text);
   }
 
   @include mat-card.theme($theme);
