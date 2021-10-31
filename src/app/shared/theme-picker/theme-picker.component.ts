@@ -26,29 +26,29 @@ export class ThemePickerComponent {
       accent: '#FFC107',
       displayName: 'Deep Purple & Amber',
       name: 'deeppurple-amber',
-      isDark: false,
+      isDark: true,
+      isDefault: true
     },
     {
       primary: '#3F51B5',
       accent: '#E91E63',
       displayName: 'Indigo & Pink',
       name: 'indigo-pink',
-      isDark: false,
-      isDefault: true,
+      isDark: false
     },
     {
       primary: '#E91E63',
       accent: '#607D8B',
       displayName: 'Pink & Blue-grey',
       name: 'pink-bluegrey',
-      isDark: true,
+      isDark: true
     },
     {
       primary: '#9C27B0',
       accent: '#4CAF50',
       displayName: 'Purple & Green',
       name: 'purple-green',
-      isDark: true,
+      isDark: true
     },
   ];
 
