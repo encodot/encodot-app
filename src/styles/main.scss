@@ -1,7 +1,10 @@
-@import "cursor";
-@import "mat-card";
-@import "mat-icon";
-@import "util";
+@use '@angular/material' as mat;
+@use "./themes/indigo-pink.scss";
+@use "cursor";
+@use "mat-icon";
+@use "util";
+
+@include mat.core();
 
 html, body {
   height: 100%;

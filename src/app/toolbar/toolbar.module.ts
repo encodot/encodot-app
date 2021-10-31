@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
+import { ThemePickerModule } from '@shared/theme-picker';
 import { ToolbarComponent } from './toolbar.component';
 
 @NgModule({
@@ -13,6 +14,7 @@ import { ToolbarComponent } from './toolbar.component';
   imports: [
     CommonModule,
     RouterModule,
+    ThemePickerModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule

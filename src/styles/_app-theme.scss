@@ -1,0 +1,14 @@
+@use '@angular/material' as mat;
+@use './mat-card';
+@use 'sass:map';
+
+// Styles for the docs app that are based on the current theme.
+@mixin theme($theme) {
+  $background: map.get($theme, background);
+
+  .encodot-background {
+    background: mat.get-color-from-palette($background, background);
+  }
+
+  @include mat-card.theme($theme);
+}

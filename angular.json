@@ -28,8 +28,27 @@
             ],
             "styles": [
               "./node_modules/bootstrap/dist/css/bootstrap-grid.min.css",
-              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "src/styles/main.scss"
+              "src/styles/main.scss",
+              {
+                "inject": false,
+                "input": "src/styles/themes/pink-bluegrey.scss",
+                "bundleName": "pink-bluegrey"
+              },
+              {
+                "inject": false,
+                "input": "src/styles/themes/deeppurple-amber.scss",
+                "bundleName": "deeppurple-amber"
+              },
+              {
+                "inject": false,
+                "input": "src/styles/themes/indigo-pink.scss",
+                "bundleName": "indigo-pink"
+              },
+              {
+                "inject": false,
+                "input": "src/styles/themes/purple-green.scss",
+                "bundleName": "purple-green"
+              }
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [

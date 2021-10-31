@@ -1,4 +1,4 @@
-<mat-toolbar>
+<mat-toolbar color="primary">
 
   <button mat-icon-button>
     <mat-icon>mail_outline</mat-icon>
@@ -13,5 +13,9 @@
   <a class="ml-2" mat-button routerLink="/test-api" *ngIf="showTestLinks">
     Test api
   </a>
+
+  <div class="flex-grow-1"></div>
+
+  <app-theme-picker></app-theme-picker>
 
 </mat-toolbar>
