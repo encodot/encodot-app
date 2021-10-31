@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { IconModule } from '@shared/icon';
 import { ErrorCardComponent } from './error-card.component';
 
 @NgModule({
@@ -10,8 +10,8 @@ import { ErrorCardComponent } from './error-card.component';
   ],
   imports: [
     CommonModule,
-    MatCardModule,
-    MatIconModule
+    IconModule,
+    MatCardModule
   ],
   exports: [
     ErrorCardComponent

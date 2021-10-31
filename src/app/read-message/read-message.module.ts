@@ -4,9 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { EncodotApiModule } from '@shared/encodot-api';
+import { IconModule } from '@shared/icon';
 import { SpinnerModule } from '@shared/spinner';
 import { ErrorCardModule } from '../shared/error-card';
 import { ReadMessageRoutingModule } from './read-message-routing.module';
@@ -22,9 +22,9 @@ import { ReadMessageComponent } from './read-message.component';
     EncodotApiModule,
     ErrorCardModule,
     SpinnerModule,
+    IconModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule,
     MatCardModule,
     MatButtonModule,
     FormsModule,
