@@ -8,8 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "sr": "node scripts/search-replace-file.js",
-    "change-version": "node scripts/change-version.js"
+    "sr": "node scripts/search-replace-file.js"
   },
   "private": true,
   "dependencies": {
