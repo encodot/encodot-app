@@ -22,7 +22,7 @@
         <mat-icon matSuffix>vpn_key</mat-icon>
       </mat-form-field>
 
-      <mat-card class="mt-2 w-100 info" *ngIf="url">
+      <mat-card class="mt-2 w-100 info" *ngIf="url$ | async as url">
         <mat-card-content>
             <mat-form-field class="my-0 me-2 py-0 w-100" appearance="outline">
               <mat-label>Message URL</mat-label>
@@ -32,12 +32,12 @@
         </mat-card-content>
       </mat-card>
 
-      <app-error-card [error]="error"></app-error-card>
+      <app-error-card [error]="(error$ | async)?.toString()"></app-error-card>
     </mat-card-content>
 
     <mat-card-actions class="my-0 p-0 d-flex">
       <div class="flex-grow-1"></div>
-      <button mat-raised-button color="primary" [appSpinner]="actionSub?.closed === false" icon="mail_outline">Send it…</button>
+      <button mat-raised-button color="primary" [appSpinner]="loading$ | async" icon="mail_outline">Send it…</button>
     </mat-card-actions>
 
   </form>

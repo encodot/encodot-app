@@ -1,72 +1,40 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { EncodotApiService } from '@shared/encodot-api';
-import { delayAtLeast } from '@shared/rxjs';
-import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { sendMessageAction } from './state/write-message.actions';
+import { selectWriteMessageError, selectWriteMessageLoading, selectWriteMessageUrl } from './state/write-message.selectors';
 
 @Component({
   selector: 'app-write-message',
   templateUrl: './write-message.component.html',
   styleUrls: ['./write-message.component.scss']
 })
-export class WriteMessageComponent implements OnDestroy {
+export class WriteMessageComponent {
 
-  public actionSub: Subscription;
+  public loading$ = this.store.select(selectWriteMessageLoading);
+  public url$ = this.store.select(selectWriteMessageUrl);
+  public error$ = this.store.select(selectWriteMessageError);
 
   public form = new UntypedFormGroup({
     message: new UntypedFormControl(null, [ Validators.required ]),
     password: new UntypedFormControl()
   });
 
-  public error: string;
-  public url: string;
-
   public constructor(
-    private apiSv: EncodotApiService,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private store: Store
   ) { }
 
-  public ngOnDestroy(): void {
-    this.actionSub?.unsubscribe();
-  }
-
   public addMessage(): void {
-    if (this.actionSub?.closed === false || this.form.invalid) {
-      return;
-    }
-
-    this.error = null;
-    this.url = null;
-    const { message, password } = this.form.value;
-
-    const meta$ = this.apiSv.addMessage(message, password === '' ? null : password);
-
-    this.actionSub = meta$.pipe(
-      delayAtLeast(1000)
-    ).subscribe(({ id, urlPassword }) => {
-      console.log('Got message metadata', id, urlPassword);
-      this.url = this.getUrl(window.location.origin, id, urlPassword, password?.length > 0);
-    }, e => {
-      console.error('Could not send message', e);
-      this.error = 'Something went wrong :(';
-    });
+    const stripParams = ({ message, password }) => ({ message, password });
+    this.store.dispatch(sendMessageAction(stripParams(this.form.value)));
   }
 
   public copiedToClipboard(): void {
     this.snackbar.open('Copied message URL to clipboard! :)', null, {
       duration: 2000
     });
-  }
-
-  private getUrl(origin: string, messageId: string, urlPassword: string, usePassword: boolean): string {
-    let url = `${ origin }/read-message?id=${ messageId }&urlPw=${ urlPassword }`;
-
-    if (usePassword) {
-      url += '&promptPw=true';
-    }
-
-    return url;
   }
 
 }
