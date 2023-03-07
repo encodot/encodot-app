@@ -116,8 +116,6 @@
         "test": {
           "builder": "@angular-builders/jest:run",
           "options": {
-            "no-cache": true,
-            "runInBand": true
           }
         },
         "e2e": {
