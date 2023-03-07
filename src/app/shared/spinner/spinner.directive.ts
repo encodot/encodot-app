@@ -1,8 +1,8 @@
 import { ComponentFactoryResolver, ComponentRef, Directive, ElementRef, Host, Input, OnInit, Renderer2, ViewContainerRef } from '@angular/core';
-import { MatButton } from '@angular/material/button';
+import { MatLegacyButton as MatButton } from '@angular/material/legacy-button';
 import { ThemePalette } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatLegacyProgressSpinner as MatProgressSpinner } from '@angular/material/legacy-progress-spinner';
 
 @Directive({
   selector: 'button[appSpinner]',

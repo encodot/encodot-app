@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { EncodotApiService } from '@shared/encodot-api';
 import { delayAtLeast } from '@shared/rxjs';
@@ -20,8 +20,8 @@ export class ReadMessageComponent implements OnInit, OnDestroy {
   public clearMessage: string;
   public error: string;
 
-  public form = new FormGroup({
-    password: new FormControl(null, Validators.required)
+  public form = new UntypedFormGroup({
+    password: new UntypedFormControl(null, Validators.required)
   });
 
   public constructor(

@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { EncodotApiService } from '@shared/encodot-api';
 import { delayAtLeast } from '@shared/rxjs';
 import { Subscription } from 'rxjs';
@@ -14,9 +14,9 @@ export class WriteMessageComponent implements OnDestroy {
 
   public actionSub: Subscription;
 
-  public form = new FormGroup({
-    message: new FormControl(null, [ Validators.required ]),
-    password: new FormControl()
+  public form = new UntypedFormGroup({
+    message: new UntypedFormControl(null, [ Validators.required ]),
+    password: new UntypedFormControl()
   });
 
   public error: string;

@@ -11,18 +11,21 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "importHelpers": true,
-    "target": "es2015",
+    "target": "ES2022",
     "module": "es2020",
     "lib": [
       "es2020",
       "dom"
     ],
     "paths": {
-      "@shared/*": [ "app/shared/*" ]
+      "@shared/*": [
+        "app/shared/*"
+      ]
     },
     "types": [
       "jest"
-    ]
+    ],
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

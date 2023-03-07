@@ -6,5 +6,5 @@ $_primary: mat.define-palette(mat.$purple-palette);
 $_accent:  mat.define-palette(mat.$green-palette, A200, A100, A400);
 $_theme: mat.define-dark-theme($_primary, $_accent);
 
-@include mat.all-component-themes($_theme);
+@include mat.all-legacy-component-themes($_theme);
 @include app-theme.theme($_theme);

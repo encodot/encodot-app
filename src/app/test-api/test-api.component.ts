@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { EncodotApiService } from '@shared/encodot-api';
 import { MessageMetadata } from '@shared/models';
 import { concat, Observable, of, Subscription } from 'rxjs';
@@ -15,13 +15,13 @@ export class TestApiComponent implements OnInit, OnDestroy {
 
   public actionSub: Subscription;
 
-  public form = new FormGroup({
-    testCycles: new FormControl(10, [ Validators.required, Validators.min(1), Validators.max(10000) ]),
-    msgMin: new FormControl(1, [ Validators.required, Validators.min(1), Validators.max(1000) ]),
-    msgMax: new FormControl(500, [ Validators.required, Validators.min(2), Validators.max(10000) ]),
-    passwordMin: new FormControl(1, [ Validators.required, Validators.min(1), Validators.max(50) ]),
-    passwordMax: new FormControl(50, [ Validators.required, Validators.min(2), Validators.max(1000) ]),
-    specialChars: new FormControl(false)
+  public form = new UntypedFormGroup({
+    testCycles: new UntypedFormControl(10, [ Validators.required, Validators.min(1), Validators.max(10000) ]),
+    msgMin: new UntypedFormControl(1, [ Validators.required, Validators.min(1), Validators.max(1000) ]),
+    msgMax: new UntypedFormControl(500, [ Validators.required, Validators.min(2), Validators.max(10000) ]),
+    passwordMin: new UntypedFormControl(1, [ Validators.required, Validators.min(1), Validators.max(50) ]),
+    passwordMax: new UntypedFormControl(50, [ Validators.required, Validators.min(2), Validators.max(1000) ]),
+    specialChars: new UntypedFormControl(false)
   });
 
   public results: (number | Error)[] = [];
