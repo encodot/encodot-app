@@ -1,10 +1,3 @@
-<ng-template #message>
-  <mat-form-field class="my-0 w-100" appearance="outline">
-    <mat-label>Message</mat-label>
-    <textarea matInput rows="4" readonly value="{{ clearMessage || '' }}"></textarea>
-  </mat-form-field>
-</ng-template>
-
 <mat-card class="mt-2 w-100">
 
   <mat-card-header>
@@ -12,27 +5,35 @@
       <mat-icon class="card-header">drafts_outlined</mat-icon>
     </div>
     <mat-card-title>Read message</mat-card-title>
-    <mat-card-subtitle>{{ messageId }}</mat-card-subtitle>
+    <mat-card-subtitle>{{ id$ | async }}</mat-card-subtitle>
   </mat-card-header>
 
-  <form [formGroup]="form" (ngSubmit)="getMessage()">
+  <p *ngIf="paramsMissing$ | async">Parameters invalid!</p>
 
+  <div class="mt-2 d-flex justify-content-center" *ngIf="loading$ | async">
+    <mat-spinner [diameter]="40"></mat-spinner>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="getMessage()" *ngIf="showPasswordForm$ | async">
     <mat-card-content>
-
-      <mat-form-field class="w-100" appearance="outline" *ngIf="!clearMessage; else message">
+      <mat-form-field class="w-100" appearance="outline">
         <mat-label>Password</mat-label>
         <input matInput type="password" placeholder="Area51…" formControlName="password">
         <mat-icon matSuffix>vpn_key</mat-icon>
       </mat-form-field>
-
     </mat-card-content>
 
-    <mat-card-actions class="my-0 p-0 d-flex" *ngIf="!clearMessage">
+    <mat-card-actions class="my-0 p-0 d-flex">
       <div class="flex-grow-1"></div>
-      <button mat-raised-button type="submit" color="primary" [appSpinner]="actionSub?.closed === false" icon="lock_open">View message</button>
+      <button mat-raised-button type="submit" color="primary" icon="lock_open">View message</button>
     </mat-card-actions>
-
-    <app-error-card [error]="error"></app-error-card>
   </form>
+
+  <mat-form-field class="my-0 w-100" appearance="outline" *ngIf="message$ | async as msg">
+    <mat-label>Message</mat-label>
+    <textarea matInput rows="4" readonly [value]="msg"></textarea>
+  </mat-form-field>
+
+  <app-error-card [error]="error$ | async"></app-error-card>
 
 </mat-card>
