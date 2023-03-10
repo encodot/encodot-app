@@ -1,24 +1,24 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { EncodotApiService } from '@shared/encodot-api';
-import { delayAtLeast } from '@shared/rxjs';
-import { Subscription } from 'rxjs';
+import { map, tap } from 'rxjs';
+import { ReadMessageStore } from './read-message.store';
 
 @Component({
   selector: 'app-read-message',
   templateUrl: './read-message.component.html',
-  styleUrls: ['./read-message.component.scss']
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./read-message.component.scss'],
+  providers: [ ReadMessageStore ]
 })
-export class ReadMessageComponent implements OnInit, OnDestroy {
+export class ReadMessageComponent implements OnInit {
 
-  public actionSub: Subscription;
-  public messageId: string;
-  private urlPassword: string;
-  public promptPassword = true;
-
-  public clearMessage: string;
-  public error: string;
+  public paramsMissing$ = this.readMessageStore.paramsMissing$;
+  public showPasswordForm$ = this.readMessageStore.showPasswordForm$;
+  public id$ = this.readMessageStore.id$;
+  public loading$ = this.readMessageStore.loading$;
+  public message$ = this.readMessageStore.message$;
+  public error$ = this.readMessageStore.error$;
 
   public form = new UntypedFormGroup({
     password: new UntypedFormControl(null, Validators.required)
@@ -26,44 +26,24 @@ export class ReadMessageComponent implements OnInit, OnDestroy {
 
   public constructor(
     private activatedRoute: ActivatedRoute,
-    private apiSv: EncodotApiService
+    private readMessageStore: ReadMessageStore
   ) { }
 
   public ngOnInit(): void {
-    const queryParams = this.activatedRoute.snapshot.queryParams;
-    this.messageId = queryParams.id;
-    this.urlPassword = queryParams.urlPw;
-    this.promptPassword = queryParams.promptPw === 'true';
+    const params$ = this.activatedRoute.queryParams.pipe(
+      map(({ id, urlPw, promptPw }) => ({ id, urlPw, promptPw: promptPw === 'true' }))
+    );
 
-    if (!this.promptPassword) {
-      this.form.controls.password.disable();
-      this.getMessage();
-    }
-  }
-
-  public ngOnDestroy(): void {
-    this.actionSub?.unsubscribe();
+    this.readMessageStore.loadParams(params$);
   }
 
   public getMessage(): void {
-    if (this.actionSub?.closed === false && this.promptPassword) {
+    if (this.form.invalid) {
+      console.error('Form invalid');
       return;
     }
 
-    this.clearMessage = null;
-    this.error = null;
-
-    const password = this.form.value.password;
-
-    this.actionSub = this.apiSv.getMessage(this.messageId, password, this.urlPassword).pipe(
-      delayAtLeast(1000)
-    ).subscribe(({ message }) => {
-      console.log('Got message', message);
-      this.clearMessage = message;
-    }, e => {
-      console.error('Could not load message', e);
-      this.error = 'Something went wrong :(';
-    });
+    this.readMessageStore.loadMessage(this.form.value.password);
   }
 
 }

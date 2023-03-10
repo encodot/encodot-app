@@ -1,72 +1,44 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { EncodotApiService } from '@shared/encodot-api';
-import { delayAtLeast } from '@shared/rxjs';
-import { Subscription } from 'rxjs';
+import { WriteMessageStore } from './write-message.store';
 
 @Component({
   selector: 'app-write-message',
   templateUrl: './write-message.component.html',
-  styleUrls: ['./write-message.component.scss']
+  styleUrls: ['./write-message.component.scss'],
+  providers: [ WriteMessageStore ]
 })
-export class WriteMessageComponent implements OnDestroy {
+export class WriteMessageComponent {
 
-  public actionSub: Subscription;
+  public loading$ = this.writeMessageStore.loading$;
+  public url$ = this.writeMessageStore.url$;
+  public error$ = this.writeMessageStore.error$;
 
   public form = new UntypedFormGroup({
     message: new UntypedFormControl(null, [ Validators.required ]),
     password: new UntypedFormControl()
   });
 
-  public error: string;
-  public url: string;
-
-  public constructor(
-    private apiSv: EncodotApiService,
-    private snackbar: MatSnackBar
-  ) { }
-
-  public ngOnDestroy(): void {
-    this.actionSub?.unsubscribe();
+  public get formInvalid(): boolean {
+    return this.form.invalid;
   }
 
+  public constructor(
+    private snackbar: MatSnackBar,
+    private writeMessageStore: WriteMessageStore
+  ) { }
+
   public addMessage(): void {
-    if (this.actionSub?.closed === false || this.form.invalid) {
-      return;
-    }
+    const stripParams = ({ message, password }) => ({ message, password });
 
-    this.error = null;
-    this.url = null;
-    const { message, password } = this.form.value;
-
-    const meta$ = this.apiSv.addMessage(message, password === '' ? null : password);
-
-    this.actionSub = meta$.pipe(
-      delayAtLeast(1000)
-    ).subscribe(({ id, urlPassword }) => {
-      console.log('Got message metadata', id, urlPassword);
-      this.url = this.getUrl(window.location.origin, id, urlPassword, password?.length > 0);
-    }, e => {
-      console.error('Could not send message', e);
-      this.error = 'Something went wrong :(';
-    });
+    this.writeMessageStore.addMessage(stripParams(this.form.value));
   }
 
   public copiedToClipboard(): void {
     this.snackbar.open('Copied message URL to clipboard! :)', null, {
       duration: 2000
     });
-  }
-
-  private getUrl(origin: string, messageId: string, urlPassword: string, usePassword: boolean): string {
-    let url = `${ origin }/read-message?id=${ messageId }&urlPw=${ urlPassword }`;
-
-    if (usePassword) {
-      url += '&promptPw=true';
-    }
-
-    return url;
   }
 
 }
