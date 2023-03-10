@@ -1,34 +1,38 @@
 import { Component } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { Store } from '@ngrx/store';
-import { sendMessageAction } from './state/write-message.actions';
-import { selectWriteMessageError, selectWriteMessageLoading, selectWriteMessageUrl } from './state/write-message.selectors';
+import { WriteMessageStore } from './write-message.store';
 
 @Component({
   selector: 'app-write-message',
   templateUrl: './write-message.component.html',
-  styleUrls: ['./write-message.component.scss']
+  styleUrls: ['./write-message.component.scss'],
+  providers: [ WriteMessageStore ]
 })
 export class WriteMessageComponent {
 
-  public loading$ = this.store.select(selectWriteMessageLoading);
-  public url$ = this.store.select(selectWriteMessageUrl);
-  public error$ = this.store.select(selectWriteMessageError);
+  public loading$ = this.writeMessageStore.loading$;
+  public url$ = this.writeMessageStore.url$;
+  public error$ = this.writeMessageStore.error$;
 
   public form = new UntypedFormGroup({
     message: new UntypedFormControl(null, [ Validators.required ]),
     password: new UntypedFormControl()
   });
 
+  public get formInvalid(): boolean {
+    return this.form.invalid;
+  }
+
   public constructor(
     private snackbar: MatSnackBar,
-    private store: Store
+    private writeMessageStore: WriteMessageStore
   ) { }
 
   public addMessage(): void {
     const stripParams = ({ message, password }) => ({ message, password });
-    this.store.dispatch(sendMessageAction(stripParams(this.form.value)));
+
+    this.writeMessageStore.addMessage(stripParams(this.form.value));
   }
 
   public copiedToClipboard(): void {

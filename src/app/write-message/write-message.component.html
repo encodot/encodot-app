@@ -37,7 +37,7 @@
 
     <mat-card-actions class="my-0 p-0 d-flex">
       <div class="flex-grow-1"></div>
-      <button mat-raised-button color="primary" [appSpinner]="loading$ | async" icon="mail_outline">Send it…</button>
+      <button mat-raised-button color="primary" [appSpinner]="loading$ | async" icon="mail_outline" [disabled]="formInvalid">Send it…</button>
     </mat-card-actions>
 
   </form>
