@@ -1,0 +1,23 @@
+name: Build App Docker Image
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - v*.*.*
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: |
+        IMAGE_NAME=${{secrets.docker_username}}/encodot-app:$(jq -r '.version' package.json)-$(date +%s)
+        echo Image name: $IMAGE_NAME
+        docker build . --tag $IMAGE_NAME
+        docker login -u ${{secrets.docker_username}} -p ${{secrets.docker_password}}
+        docker push $IMAGE_NAME
