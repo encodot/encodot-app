@@ -1,6 +1,6 @@
 # Encodot App
 
-[![Build Status](https://dev.azure.com/sheepr4ider/encodot-app/_apis/build/status/encodot.encodot-app?branchName=release%2Fprod)](https://dev.azure.com/sheepr4ider/encodot-app/_build/latest?definitionId=11&branchName=release%2Fprod)
+[![Build App Docker Image](https://github.com/encodot/encodot-app/actions/workflows/docker-image.yml/badge.svg)](https://github.com/encodot/encodot-app/actions/workflows/docker-image.yml)
 
 Website for the encodot project.
 
