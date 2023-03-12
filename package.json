@@ -1,6 +1,6 @@
 {
   "name": "encodot",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +9,7 @@
     "test:o": "ng test -o",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "release": "stanard-version",
+    "release": "standard-version",
     "sr": "node scripts/search-replace-file.js",
     "prepare": "husky install"
   },
